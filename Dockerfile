@@ -31,6 +31,9 @@ RUN buildDeps=" \
         libssl-dev \
         libxml2-dev \
         xz-utils \
+        libpng-dev \
+        libicu-dev \
+        libxslt-dev \
     " \
     && set -x \
     && apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
@@ -49,11 +52,18 @@ RUN buildDeps=" \
         --disable-cgi \
         --enable-mysqlnd \
         --enable-zip \
+        --enable-intl \
+        --enable-mbstring \
+        --enable-mongo \
+        --enable-fpm \
         --with-curl \
         --with-openssl \
         --with-readline \
         --with-recode \
         --with-zlib \
+        --with-gd \
+        --with-xsl=/usr \
+        --with-gettext=/usr/local/opt/gettext \
     && make -j"$(nproc)" \
     && make install \
     && { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
